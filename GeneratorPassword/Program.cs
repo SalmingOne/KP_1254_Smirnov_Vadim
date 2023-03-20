@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -30,6 +31,52 @@ namespace GeneratorPassword
             int code = random.Next(s.Length);
             return (char)s[code];
         }
+
+        static void changeSymbol(string[] args)
+        {
+            if ((args.Contains("-u") && args.Contains("-s")) || (args.Contains("--uppercase") && args.Contains("--special")) || args.Contains("-us"))
+                {
+                    symbols.Add("special");
+                    symbols.Add("Upper");
+                    symbols.Remove("Lower");
+                }
+            else if (args.Contains("-u") || args.Contains("--uppercase"))
+                {
+                    symbols.Add("Upper");
+                    symbols.Remove("Lower");
+                }
+            else if (args.Contains("-s") || args.Contains("--special"))
+                {
+                    symbols.Add("special");
+                }
+        }
+
+        static void changeParam(string[] args)
+        {
+            if (args[0][0] != '-')
+            {
+                len = Convert.ToInt32(args[0]);
+            }
+            if (args[0].Contains("--length"))
+            {
+                string[] a = args[0].Split('=');
+                len = Convert.ToInt32(a[1]);
+            }
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].Contains("--digits"))
+                {
+                    string[] b = args[i].Split('=');
+                    min_dig = Convert.ToInt32(b[1]);
+                }
+                if (args[i].Contains("--letters"))
+                {
+                    string[] c = args[i].Split('=');
+                    min_let = Convert.ToInt32(c[1]);
+                }
+            }
+        }
+
         static string Shuffle(string str)
         {
             char[] array = str.ToCharArray();
@@ -44,60 +91,49 @@ namespace GeneratorPassword
             }
             return new string(array);
         }
+        static char genPass(List<string> list)
+        {
+            char str = new char();
+            int rand2 = random.Next(symbols.Count);
+            switch (symbols[rand2])
+            {
+                case "Lower":
+                    str = GenLower();
+                    break;
+                case "Number":
+                    str = Number();
+                    break;
+                case "Upper":
+                    str = GenUpper();
+                    break;
+                case "special":
+                    str = Special();
+                    break;
+            }
+            return str;
+        }
+        static List<string> symbols = new List<string> {"Number", "Lower"};
+        
         static Random random = new Random();
         static int len = 16;
         static string s = "";
-        static int default_start = 0;
-        static int default_stop = 2;
         static int min_dig = 0;
         static int min_let = 0;
-        static bool v = true;
         static void Main(string[] args)
         {
             if (args.Length > 0)
             {
-                    if ((args.Contains("-u") || args.Contains("--uppercase")) && (args.Contains("-s") || args.Contains("--special")))
-                    {
-                        default_start = 1; default_stop = 4;v= false;
-                    }
-                    else if (args.Contains("-u") || args.Contains("--uppercase"))
-                    {
-                        default_start = 1; default_stop = 3;
-                    }
-                    else if (args.Contains("-s") || args.Contains("--special"))
-                    {
-                        default_start = -1;v= false;
-                    }
-                    if (args[0][0] != '-')
+                changeSymbol(args);
+                changeParam(args);
+                if (min_dig != 0 || min_let != 0)
                 {
-                    len = Convert.ToInt32(args[0]);
-                }
-                    if (args[0].Contains("--length"))
-                    {
-                        string[] a = args[0].Split('=');
-                        len = Convert.ToInt32(a[1]);
-                    }
-                    for (int i = 0; i < args.Length; i++)
-                    {
-                        if (args[i].Contains("--digits"))
-                        {
-                            string[] b = args[i].Split('=');
-                            min_dig = Convert.ToInt32(b[1]);
-                        }
-                        if (args[i].Contains("--letters"))
-                        {
-                            string[] c = args[i].Split('=');
-                            min_let = Convert.ToInt32(c[1]);
-                        }
-                    }
-                if (min_dig!=0 || min_let!=0) 
-                { 
-                    if (min_dig!=0 && min_let != 0)
+                    if (min_dig != 0 && min_let != 0)
                     {
                         int sum_len = min_let + min_dig;
 
-                        if ((sum_len < len && v))
+                        if ((sum_len < len && !symbols.Contains("special")))
                         {
+                            Console.WriteLine("Недостаочно символов для пароля");
                             return;
                         }
                         else
@@ -107,7 +143,7 @@ namespace GeneratorPassword
                                 s += Number();
                                 min_dig -= 1;
                             }
-                            if (default_start == -1 || default_start == 0)
+                            if (symbols.Contains("Lower"))
                             {
                                 while (min_let > 0)
                                 {
@@ -116,7 +152,7 @@ namespace GeneratorPassword
                                 }
 
                             }
-                            else
+                            else if (symbols.Contains("Upper"))
                             {
                                 while (min_let > 0)
                                 {
@@ -129,16 +165,7 @@ namespace GeneratorPassword
                             {
                                 while (s.Length < len)
                                 {
-                                    int rand1 = random.Next(default_start, default_stop);
-                                    switch (rand1)
-                                    {
-                                        case -1:
-                                            s += Special();
-                                            break;
-                                        case 3:
-                                            s += Special();
-                                            break;
-                                    }
+                                    Special();
                                 }
                             }
                         }
@@ -146,41 +173,26 @@ namespace GeneratorPassword
                     }
                     else if (min_dig != 0)
                     {
+                        List<string> new_symbols = symbols;
+                        new_symbols.Remove("Number");
                         while (min_dig > 0)
                         {
                             s += Number();
                             min_dig -= 1;
                         }
 
-                        int n = min_dig;
-                        if (len > n)
+                        while (s.Length < len)
                         {
-                            while (s.Length < len)
-                            {
-                                int rand1 = random.Next(default_start,default_stop);
-                                switch (rand1)
-                                {
-                                    case -1:
-                                        s += Special();
-                                        break;
-                                    case 1:
-                                        s += GenLower();
-                                        break;
-                                    case 2:
-                                        s += GenUpper();
-                                        break;
-                                    case 3:
-                                        s += Special();
-                                        break;
-                                }
-                            }
+                            s += genPass(new_symbols);
                         }
                     }
                     else if (min_let != 0)
                     {
- 
-                        if (default_start == -1 || default_start == 0)
+                        List<string> new_symbols = symbols;
+                        if (symbols.Contains("Lower"))
                         {
+                            ;
+                            new_symbols.Remove("Lower");
                             while (min_let > 0)
                             {
                                 s += GenLower();
@@ -188,61 +200,31 @@ namespace GeneratorPassword
                             }
 
                         }
-                        else
+                        else if (symbols.Contains("Upper"))
                         {
+                            new_symbols.Remove("Upper");
                             while (min_let > 0)
                             {
                                 s += GenUpper();
                                 min_let -= 1;
                             }
                         }
-                        int l = min_let;
-                        int[] mas = { default_start, 1, default_stop };
-                        if (len > l)
+
+                        while (s.Length < len)
                         {
-                            while (s.Length < len)
-                            {
-                                int rand1 = random.Next(mas.Length);
-                                switch (mas[rand1])
-                                {
-                                    case -1:
-                                        s += Special();
-                                        break;
-                                    case 1:
-                                        s += Number();
-                                        break;
-                                    case 3:
-                                        s += Special();
-                                        break;
-                                }
-                            }
+                            s += genPass(new_symbols);
                         }
 
 
                     }
                     s = Shuffle(s);
-                   
+
                 }
-                while (s.Length < len)
+                else
                 {
-                    int rand2 = random.Next(default_start, default_stop);
-                    switch (rand2)
+                    while (s.Length < len)
                     {
-                        case -1:
-                            s += Special();
-                            break;
-                        case 0:
-                            s += GenLower();
-                            break;
-                        case 1:
-                            s += Number();
-                            break;
-                        case 2:
-                            s += GenUpper();
-                            break;
-                        case 3:
-                            s += Special();
-                            break;
+                        s += genPass(symbols);
                     }
                 }
             }
@@ -250,18 +232,8 @@ namespace GeneratorPassword
             {
                 while (s.Length < len)
                 {
-                    int rand = random.Next(default_start, default_stop);
-                    switch (rand)
-                    {
-                        case 0:
-                            s += GenLower();
-                            break;
-                        case 1:
-                            s += Number();
-                            break;
-                    }
+                    s += genPass(symbols);
                 }
-
             }
             Console.WriteLine(s);
             Console.ReadLine();
