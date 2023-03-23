@@ -165,7 +165,7 @@ namespace GeneratorPassword
                             {
                                 while (s.Length < len)
                                 {
-                                    Special();
+                                    s += Special();
                                 }
                             }
                         }
