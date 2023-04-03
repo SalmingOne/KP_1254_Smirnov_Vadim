@@ -60,6 +60,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -176,10 +177,10 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(6, 66);
+            this.textBox3.Location = new System.Drawing.Point(6, 419);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(553, 459);
+            this.textBox3.Size = new System.Drawing.Size(553, 134);
             this.textBox3.TabIndex = 9;
             // 
             // label9
@@ -213,7 +214,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 24);
             this.comboBox1.TabIndex = 17;
-            this.comboBox1.Text = "Ни какая";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // groupBox3
@@ -266,9 +266,9 @@
             this.checkBox3.AutoSize = true;
             this.checkBox3.Location = new System.Drawing.Point(3, 74);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(139, 20);
+            this.checkBox3.Size = new System.Drawing.Size(147, 20);
             this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "Артемий Панари";
+            this.checkBox3.Text = "Артемий Панарин";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // checkBox2
@@ -393,11 +393,22 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(896, 18);
+            this.label10.MinimumSize = new System.Drawing.Size(100, 100);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(100, 100);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "label10";
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1053, 652);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox1);
@@ -459,6 +470,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label10;
     }
 }
 
