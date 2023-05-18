@@ -1,1 +1,0 @@
-# KP_1254_Smirnov_Vadim
