@@ -12,9 +12,6 @@ namespace WindowsFormsApp2
         public string name = " ";
         public string surname = " ";
         public decimal age = 0;
-        
-
-
         public string nameAnswer = " ";
         public string answer1 = " ";
         public List<string> answer2 = new List<string>();
@@ -22,29 +19,29 @@ namespace WindowsFormsApp2
         public decimal answer4 = 0;
         public string answer5 = " ";
 
-        public void Serialize()
+        public string Serialize()
         {
-            StreamWriter sw = new StreamWriter("C:/Users/User/source/repos/TestApp/data.txt", append: true);
-            sw.WriteLine('[');
-            sw.WriteLine("  {");
-            sw.WriteLine("      \"Название вопроса\":" + '"' + nameAnswer + '"'  + ',');
-            sw.WriteLine("      \"Имя\":" + '"' + name + '"' +',');
-            sw.WriteLine("      \"Фамилия\":" + '"' + surname + '"' +',');
-            sw.WriteLine("      \"Возраст\":" + '"' + age + '"'  + ',');
-            sw.WriteLine("      \"Вопрос 1\":" + '"' + answer1 + '"'  + ',');
-            sw.WriteLine("      \"Вопрос 2\":[");
+            string data = "";
+            data += "[\n";
+            data += "  {\n";
+            data+="      \"Название вопроса\":" + '"' + nameAnswer + '"' + ','+ "\n";
+            data += "      \"Имя\":" + '"' + name + '"' + ',' + "\n";
+            data += "      \"Фамилия\":" + '"' + surname + '"' + ',' + "\n";
+            data += "      \"Возраст\":" + '"' + age + '"' + ',' + "\n";
+            data += "      \"Вопрос 1\":" + '"' + answer1 + '"' + ',' + "\n";
+            data += "      \"Вопрос 2\":[" + "\n";
             foreach (string i in answer2)
             {
-                sw.WriteLine("          " + '"' + i + '"' +',');
+                data += "          " + '"' + i + '"' + ',' + "\n";
             }
-            sw.WriteLine("      ],");
-            sw.WriteLine("      \"Вопрос 3\":" + '"' + answer3 + '"'  + ',');
-            sw.WriteLine("      \"Вопрос 4\":" + '"' + answer4 + '"'  + ',');
-            sw.WriteLine("      \"Вопрос 5\":" + '"' + answer5 + '"' + ',');
-            sw.WriteLine("  }");
-            sw.WriteLine(']');
-            
-            sw.Close();
+            data += "      ],\n";
+            data += "      \"Вопрос 3\":" + '"' + answer3 + '"' + ',' + "\n";
+            data += "      \"Вопрос 4\":" + '"' + answer4 + '"' + ',' + "\n";
+            data += "      \"Вопрос 5\":" + '"' + answer5 + '"' + ',' + "\n";
+            data += "  }" + "\n";
+            data += ']' + "\n";
+            return data;
         }
     }
 }
+
