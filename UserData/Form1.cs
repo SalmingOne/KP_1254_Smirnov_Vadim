@@ -68,85 +68,87 @@ namespace UserData
             {"ExtendedUser", Account.Permissions.ExtendedUser},
             {"Moderator", Account.Permissions.Moderator},
         };
-        void ClearFiles()
+        void ClearFiles(string filename, string filename_acc)
         {
-            StreamWriter sw = new StreamWriter("C:/Users/User/source/repos/UserData/data.txt");
-            StreamWriter sw1 = new StreamWriter("C:/Users/User/source/repos/UserData/data_acc.txt");
+            StreamWriter sw = new StreamWriter(filename);
+            StreamWriter sw1 = new StreamWriter(filename_acc);
             sw.Write(string.Empty);
             sw1.Write(string.Empty);
             sw.Close();
             sw1.Close();
         }
-        void Deserialize()
+        void Deserialize(string filename, string filename_acc)
         {
             string name = "";
             string surname = "";
             DateTime date = DateTime.MinValue;
             string login = "";
             string password = "";
-
-            string JsonString = File.ReadAllText("C:/Users/User/source/repos/UserData/data.txt");
-            string JsonString_acc = File.ReadAllText("C:/Users/User/source/repos/UserData/data_acc.txt");
-            int startIndex = 0;
-            for (int i = 0; i < JsonString_acc.Length; i++)
+            if (File.Exists(filename) && File.Exists(filename_acc))
             {
-                if (JsonString_acc[i] == '{')
+                string JsonString = File.ReadAllText(filename);
+                string JsonString_acc = File.ReadAllText(filename_acc);
+                int startIndex = 0;
+                for (int i = 0; i < JsonString_acc.Length; i++)
                 {
-                    int IndexLogin_Start = JsonString_acc.IndexOf(":", startIndex);
-                    startIndex = IndexLogin_Start + 1;
-                    int IndexLogin_End = JsonString_acc.IndexOf(",", startIndex);
-                    startIndex = IndexLogin_End + 1;
-                    int IndexPassword_Start = JsonString_acc.IndexOf(":", startIndex);
-                    startIndex = IndexPassword_Start + 1;
-                    int IndexPassword_End = JsonString_acc.IndexOf(",", startIndex);
-                    startIndex = IndexPassword_End + 1;
-
-
-                    password = JsonString_acc.Substring(IndexPassword_Start + 2, IndexPassword_End - IndexPassword_Start - 3);
-                }
-            }
-            startIndex = 0;
-            for (int i = 0; i < JsonString.Length; i++)
-            {
-                if (JsonString[i] == '{')
-                {
-                    int IndexName_Start = JsonString.IndexOf(':', startIndex);
-                    startIndex = IndexName_Start;
-                    int IndexName_End = JsonString.IndexOf(',', startIndex);
-                    startIndex = IndexName_End;
-
-                    int IndexSurname_Start = JsonString.IndexOf(":", startIndex);
-                    startIndex = IndexSurname_Start + 1;
-                    int IndexSurname_End = JsonString.IndexOf(",", startIndex);
-                    startIndex = IndexSurname_End + 1;
-
-                    int IndexDate_Start = JsonString.IndexOf(":", startIndex);
-                    startIndex = IndexDate_Start + 1;
-                    int IndexDate_End = JsonString.IndexOf(",", startIndex);
-                    startIndex = IndexDate_End + 1;
-
-                    int IndexLogin_Start = JsonString.IndexOf(":", startIndex);
-                    startIndex = IndexLogin_Start + 1;
-                    int IndexLogin_End = JsonString.IndexOf(",", startIndex);
-                    startIndex = IndexLogin_End + 1;
-
-                    int IndexStatus_Start = JsonString.IndexOf(":", startIndex);
-                    startIndex = IndexStatus_Start + 1;
-                    int IndexStatus_End = JsonString.IndexOf(",", startIndex);
-                    startIndex = IndexStatus_End + 1;
-
-                    name = JsonString.Substring(IndexName_Start + 2, IndexName_End - IndexName_Start - 3);
-                    surname = JsonString.Substring(IndexSurname_Start + 2, IndexSurname_End - IndexSurname_Start - 3);
-                    date = Convert.ToDateTime(JsonString.Substring(IndexDate_Start + 2, IndexDate_End - IndexDate_Start - 3));
-                    Console.WriteLine(date);
-                    login = JsonString.Substring(IndexLogin_Start + 2, IndexLogin_End - IndexLogin_Start - 3);
-                    string statuss = JsonString.Substring(IndexStatus_Start + 2, IndexStatus_End - IndexStatus_Start - 3);
-                    Account account1 = new Account(name, surname, date, login, password);
-                    Console.WriteLine(statuss);
-                    account1.Perm = keyValuePairs[statuss];
-                    if (currentAccount.Login != account1.Login)
+                    if (JsonString_acc[i] == '{')
                     {
-                        users.Add(account1);
+                        int IndexLogin_Start = JsonString_acc.IndexOf(":", startIndex);
+                        startIndex = IndexLogin_Start + 1;
+                        int IndexLogin_End = JsonString_acc.IndexOf(",", startIndex);
+                        startIndex = IndexLogin_End + 1;
+                        int IndexPassword_Start = JsonString_acc.IndexOf(":", startIndex);
+                        startIndex = IndexPassword_Start + 1;
+                        int IndexPassword_End = JsonString_acc.IndexOf(",", startIndex);
+                        startIndex = IndexPassword_End + 1;
+
+
+                        password = JsonString_acc.Substring(IndexPassword_Start + 2, IndexPassword_End - IndexPassword_Start - 3);
+                    }
+                }
+                startIndex = 0;
+                for (int i = 0; i < JsonString.Length; i++)
+                {
+                    if (JsonString[i] == '{')
+                    {
+                        int IndexName_Start = JsonString.IndexOf(':', startIndex);
+                        startIndex = IndexName_Start;
+                        int IndexName_End = JsonString.IndexOf(',', startIndex);
+                        startIndex = IndexName_End;
+
+                        int IndexSurname_Start = JsonString.IndexOf(":", startIndex);
+                        startIndex = IndexSurname_Start + 1;
+                        int IndexSurname_End = JsonString.IndexOf(",", startIndex);
+                        startIndex = IndexSurname_End + 1;
+
+                        int IndexDate_Start = JsonString.IndexOf(":", startIndex);
+                        startIndex = IndexDate_Start + 1;
+                        int IndexDate_End = JsonString.IndexOf(",", startIndex);
+                        startIndex = IndexDate_End + 1;
+
+                        int IndexLogin_Start = JsonString.IndexOf(":", startIndex);
+                        startIndex = IndexLogin_Start + 1;
+                        int IndexLogin_End = JsonString.IndexOf(",", startIndex);
+                        startIndex = IndexLogin_End + 1;
+
+                        int IndexStatus_Start = JsonString.IndexOf(":", startIndex);
+                        startIndex = IndexStatus_Start + 1;
+                        int IndexStatus_End = JsonString.IndexOf(",", startIndex);
+                        startIndex = IndexStatus_End + 1;
+
+                        name = JsonString.Substring(IndexName_Start + 2, IndexName_End - IndexName_Start - 3);
+                        surname = JsonString.Substring(IndexSurname_Start + 2, IndexSurname_End - IndexSurname_Start - 3);
+                        date = Convert.ToDateTime(JsonString.Substring(IndexDate_Start + 2, IndexDate_End - IndexDate_Start - 3));
+                        Console.WriteLine(date);
+                        login = JsonString.Substring(IndexLogin_Start + 2, IndexLogin_End - IndexLogin_Start - 3);
+                        string statuss = JsonString.Substring(IndexStatus_Start + 2, IndexStatus_End - IndexStatus_Start - 3);
+                        Account account1 = new Account(name, surname, date, login, password);
+                        Console.WriteLine(statuss);
+                        account1.Perm = keyValuePairs[statuss];
+                        if (currentAccount.Login != account1.Login)
+                        {
+                            users.Add(account1);
+                        }
                     }
                 }
             }
@@ -154,23 +156,31 @@ namespace UserData
 
 
         }
-        private void SaveData()
+        private void SaveData(string filename, string filename_acc)
         {
             try {
-                Account account = new Account(textBox1.Text, textBox2.Text, dateTimePicker1.Value, textBox3.Text, textBox4.Text);
-                foreach (RadioButton radioButton in groupBox2.Controls)
+                if (File.Exists(filename) && File.Exists(filename_acc))
                 {
-                    if (radioButton.Checked)
+                    StreamWriter sw = new StreamWriter(filename, append: true);
+                    StreamWriter sw1 = new StreamWriter(filename_acc, append: true);
+                    Account account = new Account(textBox1.Text, textBox2.Text, dateTimePicker1.Value, textBox3.Text, textBox4.Text);
+                    foreach (RadioButton radioButton in groupBox2.Controls)
                     {
-                        account.Perm = keyValuePairs[radioButton.Text];
+                        if (radioButton.Checked)
+                        {
+                            account.Perm = keyValuePairs[radioButton.Text];
+                        }
                     }
-                }
 
-                users.Add(account);
-                access.Add(account.Login, account.Password);
-                account.Serialize();
-                account.SerializeData();
-                listBox1.Items.Add("User(" + account.Name + ' ' + account.Surname + ')');
+                    users.Add(account);
+                    access.Add(account.Login, account.Password);
+                    sw.Write(account.Serialize());
+                    sw1.Write(account.SerializeData());
+                    listBox1.Items.Add("User(" + account.Name + ' ' + account.Surname + ')');
+
+                    sw.Close();
+                    sw1.Close();
+                }
             }
             catch { MessageBox.Show("Пользователь с таким логином уже существует", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
@@ -229,7 +239,7 @@ namespace UserData
                 return "Введите длину пароля";
             }
             Process process = new Process();
-            process.StartInfo.FileName = "C:/Users/User/source/repos/UserData/GeneratorPassword.exe";
+            process.StartInfo.FileName = "GeneratorPassword.exe";
             process.StartInfo.Arguments = args;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
@@ -304,7 +314,7 @@ namespace UserData
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SaveData();
+            SaveData("data.txt", "data_acc.txt");
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -322,9 +332,12 @@ namespace UserData
                 {
                     FillForm(account);
                 }
-                textBox1.ReadOnly = true;
-                textBox2.ReadOnly = true;
-                textBox3.ReadOnly = true;
+                if (currentAccount.Perm != Account.Permissions.Admin)
+                {
+                    textBox1.ReadOnly = true;
+                    textBox2.ReadOnly = true;
+                    textBox3.ReadOnly = true;
+                }
                 if (flagViewPass)
                 {
                     groupBox1.Visible = true;
@@ -368,7 +381,7 @@ namespace UserData
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Deserialize();
+            Deserialize("data.txt","data_acc.txt");
             listBox1.Items.Add("Me");
             listBox1.SetSelected(0, true);
             // Admin
@@ -469,12 +482,16 @@ namespace UserData
                 }
             }
             else { users[listBox1.SelectedIndex].Perm = Account.Permissions.CommonUser; }
-            ClearFiles();
+            ClearFiles("data.txt", "data_acc.txt");
+            StreamWriter sw = new StreamWriter("data.txt",append:true);
+            StreamWriter sw1 = new StreamWriter("data_acc.txt",append:true);
             foreach (Account account in users)
             {
-                account.Serialize();
-                account.SerializeData();
+                sw.Write(account.Serialize());
+                sw1.Write(account.SerializeData());
             }
+            sw.Close();
+            sw1.Close();
         }
 
         private void button4_Click(object sender, EventArgs e)

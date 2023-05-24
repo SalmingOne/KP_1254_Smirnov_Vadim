@@ -33,73 +33,76 @@ namespace UserData
             {"Moderator", Account.Permissions.Moderator},
         };
         Dictionary<string, List<string>> users = new Dictionary<string, List<string>>();
-        void Deserialize()
+        void Deserialize(string filename, string filename_acc)
         {
 
-            string JsonString = File.ReadAllText("C:/Users/User/source/repos/UserData/data.txt");
-            string JsonString_acc = File.ReadAllText("C:/Users/User/source/repos/UserData/data_acc.txt");
+            string JsonString = File.ReadAllText(filename);
+            string JsonString_acc = File.ReadAllText(filename_acc);
             int startIndex = 0;
-            for (int i = 0; i < JsonString_acc.Length; i++)
+            if (File.Exists(filename) && File.Exists(filename_acc))
             {
-                if (JsonString_acc[i] == '{')
+                for (int i = 0; i < JsonString_acc.Length; i++)
                 {
-                    int IndexLogin_Start = JsonString_acc.IndexOf(":", startIndex);
-                    startIndex = IndexLogin_Start + 1;
-                    int IndexLogin_End = JsonString_acc.IndexOf(",", startIndex);
-                    startIndex = IndexLogin_End + 1;
-                    int IndexPassword_Start = JsonString_acc.IndexOf(":", startIndex);
-                    startIndex = IndexPassword_Start + 1;
-                    int IndexPassword_End = JsonString_acc.IndexOf(",", startIndex);
-                    startIndex = IndexPassword_End + 1;
+                    if (JsonString_acc[i] == '{')
+                    {
+                        int IndexLogin_Start = JsonString_acc.IndexOf(":", startIndex);
+                        startIndex = IndexLogin_Start + 1;
+                        int IndexLogin_End = JsonString_acc.IndexOf(",", startIndex);
+                        startIndex = IndexLogin_End + 1;
+                        int IndexPassword_Start = JsonString_acc.IndexOf(":", startIndex);
+                        startIndex = IndexPassword_Start + 1;
+                        int IndexPassword_End = JsonString_acc.IndexOf(",", startIndex);
+                        startIndex = IndexPassword_End + 1;
 
 
-                    login = JsonString_acc.Substring(IndexLogin_Start + 2, IndexLogin_End - IndexLogin_Start - 3);
-                    password = JsonString_acc.Substring(IndexPassword_Start + 2, IndexPassword_End - IndexPassword_Start - 3);
-                    users.Add(login, new List<string>());
-                    users[login].Add(password);
+                        login = JsonString_acc.Substring(IndexLogin_Start + 2, IndexLogin_End - IndexLogin_Start - 3);
+                        password = JsonString_acc.Substring(IndexPassword_Start + 2, IndexPassword_End - IndexPassword_Start - 3);
+                        users.Add(login, new List<string>());
+                        users[login].Add(password);
+                    }
                 }
-            }
-            startIndex = 0;
-            for (int i = 0; i < JsonString.Length; i++)
-            {
-                if (JsonString[i] == '{')
+                startIndex = 0;
+                for (int i = 0; i < JsonString.Length; i++)
                 {
-                    int IndexName_Start = JsonString.IndexOf(':', startIndex);
-                    startIndex = IndexName_Start;
-                    int IndexName_End = JsonString.IndexOf(',', startIndex);
-                    startIndex = IndexName_End;
+                    if (JsonString[i] == '{')
+                    {
+                        int IndexName_Start = JsonString.IndexOf(':', startIndex);
+                        startIndex = IndexName_Start;
+                        int IndexName_End = JsonString.IndexOf(',', startIndex);
+                        startIndex = IndexName_End;
 
-                    int IndexSurname_Start = JsonString.IndexOf(":", startIndex);
-                    startIndex = IndexSurname_Start + 1;
-                    int IndexSurname_End = JsonString.IndexOf(",", startIndex);
-                    startIndex = IndexSurname_End + 1;
+                        int IndexSurname_Start = JsonString.IndexOf(":", startIndex);
+                        startIndex = IndexSurname_Start + 1;
+                        int IndexSurname_End = JsonString.IndexOf(",", startIndex);
+                        startIndex = IndexSurname_End + 1;
 
-                    int IndexDate_Start = JsonString.IndexOf(":", startIndex);
-                    startIndex = IndexDate_Start + 1;
-                    int IndexDate_End = JsonString.IndexOf(",", startIndex);
-                    startIndex = IndexDate_End + 1;
+                        int IndexDate_Start = JsonString.IndexOf(":", startIndex);
+                        startIndex = IndexDate_Start + 1;
+                        int IndexDate_End = JsonString.IndexOf(",", startIndex);
+                        startIndex = IndexDate_End + 1;
 
-                    int IndexLogin_Start = JsonString.IndexOf(":", startIndex);
-                    startIndex = IndexLogin_Start + 1;
-                    int IndexLogin_End = JsonString.IndexOf(",", startIndex);
-                    startIndex = IndexLogin_End + 1;
+                        int IndexLogin_Start = JsonString.IndexOf(":", startIndex);
+                        startIndex = IndexLogin_Start + 1;
+                        int IndexLogin_End = JsonString.IndexOf(",", startIndex);
+                        startIndex = IndexLogin_End + 1;
 
-                    int IndexStatus_Start = JsonString.IndexOf(":", startIndex);
-                    startIndex = IndexStatus_Start + 1;
-                    int IndexStatus_End = JsonString.IndexOf(",", startIndex);
-                    startIndex = IndexStatus_End + 1;
+                        int IndexStatus_Start = JsonString.IndexOf(":", startIndex);
+                        startIndex = IndexStatus_Start + 1;
+                        int IndexStatus_End = JsonString.IndexOf(",", startIndex);
+                        startIndex = IndexStatus_End + 1;
 
-                    name = JsonString.Substring(IndexName_Start + 2, IndexName_End - IndexName_Start - 3);
-                    surname = JsonString.Substring(IndexSurname_Start + 2, IndexSurname_End - IndexSurname_Start - 3);
-                    date = JsonString.Substring(IndexDate_Start + 2, IndexDate_End - IndexDate_Start - 3);
-                    login = JsonString.Substring(IndexLogin_Start + 2, IndexLogin_End - IndexLogin_Start - 3);
-                    status = JsonString.Substring(IndexStatus_Start + 2, IndexStatus_End - IndexStatus_Start - 3);
-                    users[login].Add(name);
-                    users[login].Add(surname);
-                    users[login].Add(date);
-                    users[login].Add(status);
+                        name = JsonString.Substring(IndexName_Start + 2, IndexName_End - IndexName_Start - 3);
+                        surname = JsonString.Substring(IndexSurname_Start + 2, IndexSurname_End - IndexSurname_Start - 3);
+                        date = JsonString.Substring(IndexDate_Start + 2, IndexDate_End - IndexDate_Start - 3);
+                        login = JsonString.Substring(IndexLogin_Start + 2, IndexLogin_End - IndexLogin_Start - 3);
+                        status = JsonString.Substring(IndexStatus_Start + 2, IndexStatus_End - IndexStatus_Start - 3);
+                        users[login].Add(name);
+                        users[login].Add(surname);
+                        users[login].Add(date);
+                        users[login].Add(status);
+                    }
+
                 }
-
             }
 
         }
@@ -127,13 +130,14 @@ namespace UserData
                     this.Hide();
                     this.Close();
                 }
+                else { MessageBox.Show("Не верный пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
             }
             else { MessageBox.Show("Пользователь не найден", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            Deserialize();
+            Deserialize("data.txt", "data_acc.txt");
         }
     }
 }

@@ -49,32 +49,32 @@ namespace UserData
         public string Password { get { return password; } set {password = value;} }
         public Permissions Perm { get { return permissions; } set { permissions = value; } }
 
-        public void Serialize()
+        public string Serialize()
         {
-            StreamWriter sw = new StreamWriter("C:/Users/User/source/repos/UserData/data.txt", append: true);
-            sw.WriteLine('[');
-            sw.WriteLine("  {");
-            sw.WriteLine("      \"Имя\":" + '"' + name + '"' + ',');
-            sw.WriteLine("      \"Фамилия\":" + '"' + surname + '"' + ',');
-            sw.WriteLine("      \"Дата рождения\":" + '"' + date + '"' + ',');
-            sw.WriteLine("      \"Логин\":" + '"' + login + '"' + ',');
-            sw.WriteLine("      \"Статус\":" + '"' + permissions + '"' + ',');
-            sw.WriteLine("  }");
-            sw.WriteLine(']');
+            string data = "";
+            data += '[' + "\n";
+            data += "  {" + "\n";
+            data += "      \"Имя\":" + '"' + name + '"' + ',' + "\n";
+            data += "      \"Фамилия\":" + '"' + surname + '"' + ',' + "\n";
+            data += "      \"Дата рождения\":" + '"' + date + '"' + ',' + "\n";
+            data += "      \"Логин\":" + '"' + login + '"' + ',' + "\n";
+            data += "      \"Статус\":" + '"' + permissions + '"' + ',' + "\n";
+            data += "  }" + "\n";
+            data += "]" + "\n";
 
-            sw.Close();
+            return data;
         }
-        public void SerializeData()
+        public string SerializeData()
         {
-            StreamWriter sw = new StreamWriter("C:/Users/User/source/repos/UserData/data_acc.txt", append: true);
-            sw.WriteLine('[');
-            sw.WriteLine("  {");
-            sw.WriteLine("      \"Логин\":" + '"' + login + '"' + ',');
-            sw.WriteLine("      \"Пароль\":" + '"' + password.Trim() + '"' + ',');
-            sw.WriteLine("  }");
-            sw.WriteLine(']');
+            string data = "";
+            data += '[' + "\n";
+            data += "  {" + "\n";
+            data += "      \"Логин\":" + '"' + login + '"' + ',' + "\n";
+            data += "      \"Пароль\":" + '"' + password.Trim() + '"' + ',' + "\n";
+            data += "  }" + "\n";
+            data += "]" + "\n";
 
-            sw.Close();
+            return data;
         }
     }
 }
