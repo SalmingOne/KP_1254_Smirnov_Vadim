@@ -73,16 +73,19 @@ namespace CriptoApp
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ClearForm();
-            encryptorsList.Clear();
-            fillEncryptors();
-            for (int i=0;i<textBox1.Text.Length;i++)
+            if (listBox2.Items.Count>0)
             {
-                textBox3.Text += encryptorsList[i % encryptorsList.Count].encrypt(textBox1.Text[i]);
-            }
-            foreach (Encryptor encryptor in encryptorsList)
-            {
-                textBox4.Text += encryptor.Key;
+                ClearForm();
+                encryptorsList.Clear();
+                fillEncryptors();
+                for (int i = 0; i < textBox1.Text.Length; i++)
+                {
+                    textBox3.Text += encryptorsList[i % encryptorsList.Count].encrypt(textBox1.Text[i]);
+                }
+                foreach (Encryptor encryptor in encryptorsList)
+                {
+                    textBox4.Text += encryptor.Key;
+                }
             }
         }
 
@@ -90,6 +93,38 @@ namespace CriptoApp
         {
             Decryptor decryptor = new Decryptor();
             textBox2.Text = decryptor.Decrypt(textBox4.Text,textBox3.Text); 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (listBox2.SelectedIndex > 0)
+            {
+                int index1 = listBox2.SelectedIndex;
+                int index2 = listBox2.SelectedIndex - 1;
+                var item1 = listBox2.Items[index1];
+                var item2 = listBox2.Items[index2];
+                listBox2.Items.RemoveAt(index1);
+                listBox2.Items.Insert(index1, item2);
+                listBox2.Items.RemoveAt(index2);
+                listBox2.Items.Insert(index2, item1);
+                listBox2.SetSelected(index2, true);
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (listBox2.SelectedIndex < listBox2.Items.Count - 1)
+            {
+                int index1 = listBox2.SelectedIndex;
+                int index2 = listBox2.SelectedIndex + 1;
+                var item1 = listBox2.Items[index1];
+                var item2 = listBox2.Items[index2];
+                listBox2.Items.RemoveAt(index2);
+                listBox2.Items.Insert(index2, item1);
+                listBox2.Items.RemoveAt(index1);
+                listBox2.Items.Insert(index1, item2);
+                listBox2.SetSelected(index2, true);
+            }
         }
     }
 }
